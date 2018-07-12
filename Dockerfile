@@ -1,22 +1,23 @@
 FROM golang:latest
 
+# wget https://cmake.org/files/v3.11/cmake-3.11.4.tar.gz && tar -xvzf cmake-3.11.4.tar.gz
+COPY cmake-3.11.4 /tmp
+
+# svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm && cd llvm/tools && svn co http://llvm.org/svn/llvm-project/cfe/trunk clang
+COPY llvm /tmp
+
 RUN \
-    cd /tmp && \
-    wget https://cmake.org/files/v3.11/cmake-3.11.4.tar.gz && \
-    tar -xvzf cmake-3.11.4.tar.gz && \
-    cd cmake-3.11.4 && \
+    cd /tmp/cmake-3.11.4 && \
     bash ./bootstrap && \
-    make && \
-    make install && \
+    make && make install && \
+    cd / && \
     rm -rf /tmp/cmake-3.11.4.tar.gz
 
 RUN \
     cd /tmp && \
-    svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm && \
-    cd llvm/tools && \
-    svn co http://llvm.org/svn/llvm-project/cfe/trunk clang && \
-    cd ../.. && \
     mkdir build && \
-    cd build && \
+    cd build
+
+RUN \
     cmake -G "Unix Makefiles" ../llvm && \
     make
