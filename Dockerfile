@@ -10,14 +10,10 @@ RUN \
     cd /tmp/cmake-3.11.4 && \
     bash ./bootstrap && \
     make && make install && \
-    cd / && \
-    rm -rf /tmp/cmake-3.11.4.tar.gz
+    cd /
 
 RUN \
-    cd /tmp && \
-    mkdir build && \
-    cd build
-
-RUN \
+    mkdir /tmp/build && \
+    cd /tmp/build && \
     cmake -G "Unix Makefiles" ../llvm && \
     make
